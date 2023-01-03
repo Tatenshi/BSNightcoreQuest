@@ -36,9 +36,6 @@ void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToH
     }
 }
 
-// Define Config
-DEFINE_CONFIG(ModConfig);
-
 // Called at the early stages of game loading
 extern "C" void setup(ModInfo &info)
 {

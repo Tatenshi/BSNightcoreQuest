@@ -24,15 +24,10 @@ void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToH
 
         // Create Container
         auto* container = QuestUI::BeatSaberUI::CreateScrollableSettingsContainer(self->get_transform());
-
+        
         // Add Options
-        QuestUI::BeatSaberUI::CreateToggle(container->get_transform(), "Enable in practice mode", getModConfig().EnableInPractice.GetValue(), [](auto value){
-            getModConfig().EnableInPractice.SetValue(value);
-        });
-
-        QuestUI::BeatSaberUI::CreateToggle(container->get_transform(), "Enable with negative speed modifier", getModConfig().EnableInSlowerMode.GetValue(), [](auto value){
-            getModConfig().EnableInSlowerMode.SetValue(value);
-        });
+        AddConfigValueToggle(container->get_transform(), getModConfig().EnableInPractice);
+        AddConfigValueToggle(container->get_transform(), getModConfig().EnableInSlowerMode);
     }
 }
 

@@ -1,4 +1,7 @@
 # BSNightcoreQuest
+![GitHub Downloads (all assets, specific tag)](https://img.shields.io/github/downloads/tatenshi/bsnightcorequest/v0.1.0/total)
+
+
 
 Removes pitch compensation to make songs go nightcore
 

@@ -14,12 +14,11 @@
 #include "GlobalNamespace/GameplayModifiers.hpp"
 #include "GlobalNamespace/PracticeSettings.hpp"
 #include "HMUI/ViewController.hpp"
-#include "questui/shared/BeatSaberUI.hpp"
-#include "questui/shared/QuestUI.hpp"
+#include "bsml/shared/BSML.hpp"
 #include "HMUI/Touchable.hpp"
 
 // Include the modloader header, which allows us to tell the modloader which mod this is, and the version etc.
-#include "modloader/shared/modloader.hpp"
+#include "scotland2/shared/loader.hpp"
 
 #include "include/logger.hpp"
 #include "include/config.hpp"

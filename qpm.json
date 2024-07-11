@@ -1,4 +1,5 @@
 {
+  "version": "0.1.0",
   "sharedDir": "shared",
   "dependenciesDir": "extern",
   "info": {
@@ -10,10 +11,16 @@
       "overrideSoName": "libBSNightcoreQuest.so"
     }
   },
+  "workspace": {
+    "scripts": {},
+    "qmodIncludeDirs": [],
+    "qmodIncludeFiles": [],
+    "qmodOutput": null
+  },
   "dependencies": [
     {
       "id": "beatsaber-hook",
-      "versionRange": "^3.14.0",
+      "versionRange": "^5.1.9",
       "additionalData": {
         "extraFiles": [
           "src/inline-hook"
@@ -21,30 +28,34 @@
       }
     },
     {
-      "id": "modloader",
-      "versionRange": "^1.2.3",
+      "id": "scotland2",
+      "versionRange": "^0.1.4",
       "additionalData": {}
     },
     {
-      "id": "codegen",
-      "versionRange": "=0.33.0",
+      "id": "bs-cordl",
+      "versionRange": "^3700.0.0",
       "additionalData": {}
     },
     {
       "id": "config-utils",
-      "versionRange": "^1.0.2",
-      "additionalData": {}
-    },
-    {
-      "id": "questui",
-      "versionRange": "^0.17.11",
+      "versionRange": "^1.4.2",
       "additionalData": {}
     },
     {
       "id": "custom-types",
-      "versionRange": "^0.15.23",
+      "versionRange": "^0.17.10",
+      "additionalData": {}
+    },
+    {
+      "id": "bsml",
+      "versionRange": "^0.4.43",
+      "additionalData": {}
+    },
+    {
+      "id": "paper",
+      "versionRange": "^3.6.4",
       "additionalData": {}
     }
-  ],
-  "additionalData": {}
+  ]
 }

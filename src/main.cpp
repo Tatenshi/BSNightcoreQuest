@@ -1,5 +1,10 @@
 #include "main.hpp"
 
+#include "GlobalNamespace/ResetPitchOnGameplayFinished.hpp"
+#include "UnityEngine/Audio/AudioMixer.hpp"
+
+SafePtrUnity<GlobalNamespace::AudioManagerSO> audioManager;
+
 MAKE_HOOK_MATCH(GameplayCoreInstallerInstallBindingsHook, &GlobalNamespace::GameplayCoreInstaller::InstallBindings, void, GlobalNamespace::GameplayCoreInstaller *self)
 {
     // Base Call
@@ -16,6 +21,65 @@ MAKE_HOOK_MATCH(GameplayCoreInstallerInstallBindingsHook, &GlobalNamespace::Game
     }
 }
 
+MAKE_HOOK_MATCH(MainInit, &GlobalNamespace::SettingsApplicatorSO::ApplyMainSettings, void, GlobalNamespace::SettingsApplicatorSO* self, BeatSaber::GameSettings::MainSettings* settings) {
+    MainInit(self, settings);
+
+    audioManager = self->_audioManager;
+}
+
+MAKE_HOOK_MATCH(RefreshMultipliers, &GlobalNamespace::GameplayModifiersPanelController::RefreshTotalMultiplierAndRankUI, void, GlobalNamespace::GameplayModifiersPanelController* self) {
+    RefreshMultipliers(self);
+
+    SetPitchSpeed(self);
+}
+
+MAKE_HOOK_MATCH(GameplayModifiersPanelAwake, &GlobalNamespace::GameplaySetupViewController::DidActivate, void, GlobalNamespace::GameplaySetupViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
+    GameplayModifiersPanelAwake(self, firstActivation, addedToHierarchy, screenSystemEnabling);
+
+    SetPitchSpeed(self->_gameplayModifiersPanelController);
+}
+
+void SetPitchSpeed(GlobalNamespace::GameplayModifiersPanelController* self){
+    if(getModConfig().EnableInMenu.GetValue())
+    {
+        float multiplier = self->_gameplayModifiers->get_songSpeedMul();
+        if (multiplier < 1 && !getModConfig().EnableInSlowerMode.GetValue()) 
+        {
+            multiplier = 1;
+        }
+        audioManager->set_musicSpeed(multiplier);
+        audioManager->set_musicPitch(1);
+    }
+}
+
+MAKE_HOOK_MATCH(DisableGameplaySetupViewController, &GlobalNamespace::GameplaySetupViewController::OnDisable, void, GlobalNamespace::GameplaySetupViewController* self)
+{
+    DisableGameplaySetupViewController(self);
+    audioManager->set_musicSpeed(1);
+}
+
+static std::map<std::string,float> oldPreviewDurations {};
+
+MAKE_HOOK_MATCH(SongPlayerCrossFade, &GlobalNamespace::LevelCollectionViewController::SongPlayerCrossfadeToLevel, void, GlobalNamespace::LevelCollectionViewController* self, GlobalNamespace::BeatmapLevel* level) {
+    float oldDuration = level->previewDuration;
+
+    if (getModConfig().EnableUnlimitedPreviews.GetValue()) 
+    {
+        // -1 means making the audioclip unlimited
+        oldPreviewDurations.insert_or_assign(level->levelID, oldDuration);
+        level->previewDuration=-1;
+    }
+
+    SongPlayerCrossFade(self, level);
+}
+
+MAKE_HOOK_MATCH(Unload, &GlobalNamespace::LevelCollectionViewController::UnloadPreviewAudioClip, void, GlobalNamespace::LevelCollectionViewController* self, GlobalNamespace::BeatmapLevel* level)
+{
+    if(oldPreviewDurations.contains(level->levelID)) {
+        level->previewDuration=oldPreviewDurations[level->levelID];
+    }
+    Unload(self, level);
+}
 
 void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling){
     if(firstActivation){
@@ -28,6 +92,8 @@ void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToH
         // Add Options
         AddConfigValueToggle(container->get_transform(), getModConfig().EnableInPractice);
         AddConfigValueToggle(container->get_transform(), getModConfig().EnableInSlowerMode);
+        AddConfigValueToggle(container->get_transform(), getModConfig().EnableInMenu);
+        AddConfigValueToggle(container->get_transform(), getModConfig().EnableUnlimitedPreviews);
     }
 }
 
@@ -57,5 +123,11 @@ extern "C" __attribute__((visibility("default"))) void late_load()
     auto logger = Paper::ConstLoggerContext("BSNightcoreQuest");
     getLogger().info("Installing hooks...");
     INSTALL_HOOK(logger, GameplayCoreInstallerInstallBindingsHook);
+    INSTALL_HOOK(logger, RefreshMultipliers);
+    INSTALL_HOOK(logger, MainInit);
+    INSTALL_HOOK(logger, SongPlayerCrossFade);
+    INSTALL_HOOK(logger, Unload);
+    INSTALL_HOOK(logger, DisableGameplaySetupViewController);
+    INSTALL_HOOK(logger, GameplayModifiersPanelAwake);
     getLogger().info("Installed all hooks!");
 }

@@ -13,9 +13,18 @@
 #include "GlobalNamespace/GameplayCoreSceneSetupData.hpp"
 #include "GlobalNamespace/GameplayModifiers.hpp"
 #include "GlobalNamespace/PracticeSettings.hpp"
+#include "GlobalNamespace/GameplayModifiersPanelController.hpp"
+#include "GlobalNamespace/SettingsApplicatorSO.hpp"
+#include "GlobalNamespace/GameplayModifiers.hpp"
+#include "GlobalNamespace/LevelCollectionViewController.hpp"
+#include "GlobalNamespace/BeatmapLevel.hpp"
+#include "GlobalNamespace/SongPreviewPlayer.hpp"
+#include "GlobalNamespace/GameplaySetupViewController.hpp"
+#include "System/Action.hpp"
+#include "UnityEngine/AudioClip.hpp"
 #include "HMUI/ViewController.hpp"
-#include "bsml/shared/BSML.hpp"
 #include "HMUI/Touchable.hpp"
+#include "bsml/shared/BSML.hpp"
 
 // Include the modloader header, which allows us to tell the modloader which mod this is, and the version etc.
 #include "scotland2/shared/loader.hpp"
@@ -24,3 +33,5 @@
 #include "include/config.hpp"
 
 void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
+
+void SetPitchSpeed(GlobalNamespace::GameplayModifiersPanelController* self);

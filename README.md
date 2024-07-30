@@ -1,5 +1,6 @@
 # BSNightcoreQuest
-![GitHub Downloads (all assets, specific tag)](https://img.shields.io/github/downloads/tatenshi/bsnightcorequest/v0.1.0/total)
+![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/tatenshi/bsnightcorequest/latest/total)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/tatenshi/bsnightcorequest/total)
 
 
 

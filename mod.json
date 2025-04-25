@@ -36,9 +36,7 @@
   "lateModFiles": [
     "libBSNightcoreQuest.so"
   ],
-  "libraryFiles": [
-    "libsl2.so"
-  ],
+  "libraryFiles": [],
   "fileCopies": [],
   "copyExtensions": []
 }

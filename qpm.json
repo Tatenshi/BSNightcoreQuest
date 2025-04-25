@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/QuestPackageManager/QPM.Package/refs/heads/main/qpm.schema.json",
   "version": "0.1.0",
   "sharedDir": "shared",
   "dependenciesDir": "extern",
@@ -12,52 +13,69 @@
     }
   },
   "workspace": {
-    "scripts": {},
-    "qmodIncludeDirs": [],
-    "qmodIncludeFiles": [],
-    "qmodOutput": null
+    "scripts": {
+      "build": [
+        "pwsh build.ps1"
+      ],
+      "clean": [
+        "pwsh build.ps1 -clean"
+      ],
+      "copy": [
+        "pwsh copy.ps1"
+      ],
+      "log": [
+        "pwsh start-logging.ps1"
+      ],
+      "qmod": [
+        "pwsh createqmod.ps1"
+      ],
+      "restart": [
+        "pwsh restart-game.ps1"
+      ],
+      "stack": [
+        "pwsh ndk-stack.ps1"
+      ],
+      "tomb": [
+        "pwsh pull-tombstone.ps1"
+      ]
+    },
+    "ndk": "^27.2.12479018",
+    "qmodOutput": "./BSNightcoreQuest.qmod"
   },
   "dependencies": [
     {
       "id": "beatsaber-hook",
-      "versionRange": "^5.1.9",
-      "additionalData": {
-        "extraFiles": [
-          "src/inline-hook"
-        ]
-      }
+      "versionRange": "^6.4.1",
+      "additionalData": {}
     },
     {
       "id": "scotland2",
-      "versionRange": "^0.1.4",
-      "additionalData": {
-        "includeQmod": false,
-        "private": true
-      }
+      "versionRange": "^0.1.6",
+      "additionalData": {}
     },
     {
       "id": "bs-cordl",
-      "versionRange": "^3700.0.0",
+      "versionRange": "^4004.0.0",
       "additionalData": {}
     },
     {
       "id": "config-utils",
-      "versionRange": "^1.4.2",
+      "versionRange": "^2.0.2",
       "additionalData": {}
     },
     {
       "id": "custom-types",
-      "versionRange": "^0.17.10",
+      "versionRange": "^0.18.2",
       "additionalData": {}
     },
     {
       "id": "bsml",
-      "versionRange": "^0.4.43",
+      "versionRange": "^0.4.51",
       "additionalData": {}
     },
     {
-      "id": "paper",
-      "versionRange": "^3.6.4",
+      "id": "paper2_scotland2",
+      "versionRange": "^4.6.1",
       "additionalData": {}
     }
   ]

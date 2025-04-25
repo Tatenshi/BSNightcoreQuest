@@ -21,7 +21,7 @@ MAKE_HOOK_MATCH(GameplayCoreInstallerInstallBindingsHook, &GlobalNamespace::Game
     }
 }
 
-MAKE_HOOK_MATCH(MainInit, &GlobalNamespace::SettingsApplicatorSO::ApplyMainSettings, void, GlobalNamespace::SettingsApplicatorSO* self, BeatSaber::GameSettings::MainSettings* settings) {
+MAKE_HOOK_MATCH(MainInit, &GlobalNamespace::SettingsApplicatorSO::ApplyGameSettings, void, GlobalNamespace::SettingsApplicatorSO* self, ByRef<BeatSaber::Settings::Settings> settings) {
     MainInit(self, settings);
 
     audioManager = self->_audioManager;

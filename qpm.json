@@ -49,37 +49,37 @@
       "additionalData": {}
     },
     {
+      "id": "bs-cordl",
+      "versionRange": "^4006.*",
+      "additionalData": {}
+    },
+    {
+      "id": "bsml",
+      "versionRange": "^0.4.53",
+      "additionalData": {}
+    },
+    {
+      "id": "config-utils",
+      "versionRange": "^2.0.3",
+      "additionalData": {}
+    },
+    {
+      "id": "custom-types",
+      "versionRange": "^0.18.3",
+      "additionalData": {}
+    },
+    {
+      "id": "paper2_scotland2",
+      "versionRange": "^4.6.4",
+      "additionalData": {}
+    },
+    {
       "id": "scotland2",
       "versionRange": "^0.1.6",
       "additionalData": {
         "includeQmod": false,
         "private": true
       }
-    },
-    {
-      "id": "bs-cordl",
-      "versionRange": "^4004.0.0",
-      "additionalData": {}
-    },
-    {
-      "id": "config-utils",
-      "versionRange": "^2.0.2",
-      "additionalData": {}
-    },
-    {
-      "id": "custom-types",
-      "versionRange": "^0.18.2",
-      "additionalData": {}
-    },
-    {
-      "id": "bsml",
-      "versionRange": "^0.4.51",
-      "additionalData": {}
-    },
-    {
-      "id": "paper2_scotland2",
-      "versionRange": "^4.6.1",
-      "additionalData": {}
     }
   ]
 }

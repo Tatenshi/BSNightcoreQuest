@@ -9,7 +9,6 @@
   "packageId": "com.beatgames.beatsaber",
   "packageVersion": "1.40.4_5283",
   "description": "Removes pitch compensation to make songs go nightcore on different speed",
-  "coverImage": "",
   "dependencies": [
     {
       "version": "^6.4.1",

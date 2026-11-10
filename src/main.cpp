@@ -3,7 +3,7 @@
 #include "GlobalNamespace/ResetPitchOnGameplayFinished.hpp"
 #include "UnityEngine/Audio/AudioMixer.hpp"
 
-SafePtrUnity<GlobalNamespace::AudioManagerSO> audioManager;
+safe_ptr<GlobalNamespace::AudioManager*> audioManager;
 
 MAKE_HOOK_MATCH(GameplayCoreInstallerInstallBindingsHook, &GlobalNamespace::GameplayCoreInstaller::InstallBindings, void, GlobalNamespace::GameplayCoreInstaller *self)
 {
@@ -21,7 +21,7 @@ MAKE_HOOK_MATCH(GameplayCoreInstallerInstallBindingsHook, &GlobalNamespace::Game
     }
 }
 
-MAKE_HOOK_MATCH(MainInit, &GlobalNamespace::SettingsApplicatorSO::ApplyGameSettings, void, GlobalNamespace::SettingsApplicatorSO* self, ByRef<BeatSaber::Settings::Settings> settings) {
+MAKE_HOOK_MATCH(MainInit, &GlobalNamespace::SettingsApplicatorSO::ApplyGameSettings, void, GlobalNamespace::SettingsApplicatorSO* self, by_ref<BeatSaber::Settings::Settings const> settings) {
     MainInit(self, settings);
 
     audioManager = self->_audioManager;
@@ -58,27 +58,16 @@ MAKE_HOOK_MATCH(DisableGameplaySetupViewController, &GlobalNamespace::GameplaySe
     audioManager->set_musicSpeed(1);
 }
 
-static std::map<std::string,float> oldPreviewDurations {};
-
 MAKE_HOOK_MATCH(SongPlayerCrossFade, &GlobalNamespace::LevelCollectionViewController::SongPlayerCrossfadeToLevel, void, GlobalNamespace::LevelCollectionViewController* self, GlobalNamespace::BeatmapLevel* level) {
     float oldDuration = level->previewDuration;
 
     if (getModConfig().EnableUnlimitedPreviews.GetValue()) 
     {
         // -1 means making the audioclip unlimited
-        oldPreviewDurations.insert_or_assign(level->levelID, oldDuration);
         level->previewDuration=-1;
     }
 
     SongPlayerCrossFade(self, level);
-}
-
-MAKE_HOOK_MATCH(Unload, &GlobalNamespace::LevelCollectionViewController::UnloadPreviewAudioClip, void, GlobalNamespace::LevelCollectionViewController* self, GlobalNamespace::BeatmapLevel* level)
-{
-    if(oldPreviewDurations.contains(level->levelID)) {
-        level->previewDuration=oldPreviewDurations[level->levelID];
-    }
-    Unload(self, level);
 }
 
 void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling){
@@ -113,6 +102,7 @@ extern "C" __attribute__((visibility("default"))) void setup(CModInfo* info)
 extern "C" __attribute__((visibility("default"))) void late_load()
 {
     // Init things
+    i2c::functions::initialize();
     getModConfig().Init(modInfo);
     BSML::Init();
 
@@ -126,7 +116,6 @@ extern "C" __attribute__((visibility("default"))) void late_load()
     INSTALL_HOOK(logger, RefreshMultipliers);
     INSTALL_HOOK(logger, MainInit);
     INSTALL_HOOK(logger, SongPlayerCrossFade);
-    INSTALL_HOOK(logger, Unload);
     INSTALL_HOOK(logger, DisableGameplaySetupViewController);
     INSTALL_HOOK(logger, GameplayModifiersPanelAwake);
     getLogger().info("Installed all hooks!");

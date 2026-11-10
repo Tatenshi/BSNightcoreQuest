@@ -3,6 +3,6 @@
 // Returns a logger, useful for printing debug messages
 Paper::ConstLoggerContext<17UL> getLogger()
 {
-    static auto fastContext = Paper::Logger::WithContext<"BSNightcoreQuest">();
+    static constexpr auto fastContext = Paper::ConstLoggerContext("BSNightcoreQuest");
     return fastContext;
 }
